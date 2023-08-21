@@ -20,8 +20,6 @@ spec:
          server: 10.222.1.60
          path: /shares/share-3010a65e-124c-4ac8-b08e-a7b2eae0b78c/server/docs/examples/model_repository
          readOnly: false
-     nodeSelector:
-       nvidia.com/gpu.product: NVIDIA-A100-PCIE-40GB-MIG-1g.5gb
      containers:
        - name: tritonserver
          ports:
