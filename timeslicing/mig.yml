@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: time-slicing-config-mig
+  namespace: kube-system
+data:
+  a100-40gb: |-
+    version: v1
+    flags:
+      migStrategy: mixed
+    sharing:
+      timeSlicing:
+        resources:
+        - name: nvidia.com/gpu
+          replicas: 3
+        - name: nvidia.com/mig-1g.5gb
+          replicas: 4
+        - name: nvidia.com/mig-2g.10gb
+          replicas: 3
+        - name: nvidia.com/mig-3g.20gb
+          replicas: 4
+        - name: nvidia.com/mig-7g.40gb
+          replicas: 7

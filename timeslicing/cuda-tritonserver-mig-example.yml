@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: tritonserver-timeslicing-mig
+ labels:
+   app: tritonserver-timeslicing-mig
+spec:
+ replicas: 8
+ selector:
+   matchLabels:
+     app: tritonserver-timeslicing-mig
+ template:
+   metadata:
+     labels:
+       app: tritonserver-timeslicing-mig
+   spec:
+     volumes:
+     - name: models
+       nfs:
+         server: 10.222.1.60
+         path: /shares/share-3010a65e-124c-4ac8-b08e-a7b2eae0b78c/server/docs/examples/model_repository
+         readOnly: false
+     containers:
+       - name: tritonserver-timeslicing-mig
+         ports:
+         - containerPort: 8000
+           name: http-triton
+         - containerPort: 8001
+           name: grpc-triton
+         - containerPort: 8002
+           name: metrics-triton
+         image: "nvcr.io/nvidia/tritonserver:23.05-py3"
+         volumeMounts:
+         - mountPath: /models
+           name: models
+         command: ["/bin/sh", "-c"]
+         args: ["/opt/tritonserver/bin/tritonserver --model-repository=/models --allow-gpu-metrics=false"]
+         resources:
+           limits:
+             nvidia.com/mig-1g.5gb: 1

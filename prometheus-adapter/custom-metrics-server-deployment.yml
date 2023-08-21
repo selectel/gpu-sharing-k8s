@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: triton-custom-metrics-apiserver
+  namespace: monitoring
+  labels:
+    app: triton-custom-metris-apiserver
+spec:
+  replicas: 1
+  selector:
+   matchLabels:
+     app: triton-custom-metrics-apiserver
+  template:
+   metadata:
+     labels:
+       app: triton-custom-metrics-apiserver
+   spec:
+     containers:
+     - name: custom-metrics-server
+       image: registry.k8s.io/prometheus-adapter/prometheus-adapter:v0.11.0
+       args:
+       - --cert-dir=/tmp
+       - --prometheus-url=http://kube-prom-stack-kube-prome-prometheus:9090/
+       - --metrics-relist-interval=30s
+       - --config=/etc/config/triton-adapter-config.yml
+       - --secure-port=6443
+       ports:
+       - name: main-port
+         containerPort: 6443
+       volumeMounts:
+       - name: config-volume
+         mountPath: /etc/config
+         readOnly: false
+     volumes:
+     - name: config-volume
+       configMap:
+         name: adapter-config
