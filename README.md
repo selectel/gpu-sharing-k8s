@@ -1,2 +1,23 @@
-# gpu-sharing-k8s
-K8s repo for enable gpu sharing (MIG, Timeslicing)
+# Шеринг GPU в Kubernetes
+Репозиторий содержит исходники, которые используются в статье [ссылка].
+
+Цель данного репозитория состоит в том, чтобы дать примеры использования MIG и Timeslicing в Kubernetes.
+
+Далее идет используемых в статье манифестов, рассортированных по директориям.
+
+## GPU-operator
+Директория содержит файл values.yml, который можно использовать при установке чарта [gpu-operator](https://github.com/NVIDIA/gpu-operator).
+
+## Monitoring
+Директория содержит манифест для установки pod-monitor. Также в install.sh можно найти инструкцию, как установить prometheus operator.
+
+## Pod-sharing-example
+Директория содержит манифест для установки примера с triton-server.
+Также манифест HPA, который позволяет настроить горизонтальное масштабирование (см prometheus-adapter).
+
+## Prometheus-adapter
+Директория содержит манифесты для установки и настройки prometheus-adapter.
+
+## Timeslicing
+Директория содержит манифесты для демонстарции примера с timeslicing.
+Также содержит пример использования MIG в сочетании с Timeslicing.
